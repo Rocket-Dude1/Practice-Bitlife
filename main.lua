@@ -44,7 +44,7 @@ function love.load()
   --[[runs once on game start.
   sets up window and loads images--]]
   love.window.setMode(win_w, win_h)
-  love.window.setTitle ("Practice Better Bitlife Game")
+  love.window.setTitle (" Better Bitlife Game")
   font = love.graphics.newFont("MonospaceTypewriter.ttf", 48/(80/(win_h/10)))
   staticFont = love.graphics.newFont("MonospaceTypewriter.ttf", 44.4,"normal",30)
 
@@ -114,6 +114,7 @@ function love.draw()
     --Plus 1 button
     button(centeredBoxLocation(230),win_h-260,230,230,5,green,red,blue,"+1",255,2,true)
 
+    button(30,win_h-260,352,44,5,green,blue,red,"TitleBarHere",255,2,false)
     --Left side buttons
     button(30,win_h-204,170,50,5,green,blue,red,"button1",255,2,true)
     button(30,win_h-142,170,50,5,green,blue,red,"button2",255,2,true)
@@ -121,6 +122,8 @@ function love.draw()
     button(centeredBoxLocation(230)-182,win_h-204,170,50,5,green,blue,red,"button4",255,2,true)
     button(centeredBoxLocation(230)-182,win_h-142,170,50,5,green,blue,red,"button5",255,2,true)
     button(centeredBoxLocation(230)-182,win_h-80,170,50,5,green,blue,red,"button6",255,2,true)
+
+    button(centeredBoxLocation(230)+242,win_h-260,352,44,5,green,blue,red,"TitleBarHere",255,2,false)
     --Right side buttons
     button(centeredBoxLocation(230)+242,win_h-204,170,50,5,green,blue,red,"button1",255,2,true)
     button(centeredBoxLocation(230)+242,win_h-142,170,50,5,green,blue,red,"button2",255,2,true)

@@ -1,17 +1,22 @@
+--1018 win_w fits perfectly for now
 win_w = 1018
 win_h = win_w * 0.63
 
+--Returns the x location for text to be centered in the screen
 function centeredTextLocation(textLength,textSize)
   return win_w/2 - (12.5*textLength*textSize)
 end
+--Returns the location for a rectangle to be centered (like a button) in the screen.
 function centeredBoxLocation(boxWidth)
   return win_w/2 - (boxWidth/2)
 end
 
+-- List of functions that go in buttonFunction()
 function gameStart()
   hasGameStart = true
 end
 
+--The function that is called when a user presses a button. The command that is run depends on the number.
 function buttonFunction(number)
   if number == 1 then
     gameStart()
@@ -20,6 +25,7 @@ function buttonFunction(number)
   end
 end
 
+--function which allows you to create buttons the player can press with autosizing text
 function button(xLocation,yLocation,width,height,lineWidth,color1,color2,color3,text,textColor,buttonFunctionNumber,hoverEvent)
   love.graphics.setLineWidth(lineWidth)
   love.graphics.setColor(color1/255,color2/255,color3/255)
@@ -40,9 +46,8 @@ function button(xLocation,yLocation,width,height,lineWidth,color1,color2,color3,
   love.graphics.print(text,staticFont,xLocation+(width/8),yLocation+(height/15),0,width/(#text*34.0136),height*0.0155)
 end
 
+--Runs once when the game starts, sets up window and loads any images
 function love.load()
-  --[[runs once on game start.
-  sets up window and loads images--]]
   love.window.setMode(win_w, win_h)
   love.window.setTitle (" Better Bitlife Game")
   font = love.graphics.newFont("MonospaceTypewriter.ttf", 48/(80/(win_h/10)))
@@ -62,7 +67,7 @@ function love.load()
   love.graphics.setBackgroundColor(red/255,green/255,blue/255)
   
 end
-
+--Updates the game every frame
 function love.update(dt)
   if love.keyboard.isDown("escape") then
     os.exit()
@@ -99,21 +104,27 @@ function love.update(dt)
     colorUpGreen = true
   end
 end
-
+--The function which draws items to the screen every frame.
 function love.draw()
+  --Sets the basic background
   love.graphics.setColor(70/255,70/255,70/255)
   love.graphics.rectangle("fill",20,20,win_w-40,win_h-40)
   love.graphics.setLineWidth(30)
   love.graphics.rectangle("line",0,0,win_w,win_h)
+
+  --Loads the play button because the player hasn't pressed play yet (obviously)
   if hasGameStart == false then
     love.graphics.setColor(1,1,1)
     love.graphics.print("Better Bitlife",staticFont,centeredTextLocation(14,1),win_h,0,1,1)
-    button(centeredBoxLocation(300),(win_h/2)-100,300,200,5,green,red,blue,"PLAY",255,1,true)
+    --Play button
+    button(centeredBoxLocation(300),(win_h/2)-75,300,150,5,green,red,blue,"PLAY",255,1,true)
   end
+  --When the game starts, the rest of the images/buttons load and the player gets to play!
   if hasGameStart == true then
     --Plus 1 button
     button(centeredBoxLocation(230),win_h-260,230,230,5,green,red,blue,"+1",255,2,true)
 
+    --Left title button
     button(30,win_h-260,352,44,5,green,blue,red,"TitleBarHere",255,2,false)
     --Left side buttons
     button(30,win_h-204,170,50,5,green,blue,red,"button1",255,2,true)
@@ -123,6 +134,7 @@ function love.draw()
     button(centeredBoxLocation(230)-182,win_h-142,170,50,5,green,blue,red,"button5",255,2,true)
     button(centeredBoxLocation(230)-182,win_h-80,170,50,5,green,blue,red,"button6",255,2,true)
 
+    --Right title button
     button(centeredBoxLocation(230)+242,win_h-260,352,44,5,green,blue,red,"TitleBarHere",255,2,false)
     --Right side buttons
     button(centeredBoxLocation(230)+242,win_h-204,170,50,5,green,blue,red,"button1",255,2,true)

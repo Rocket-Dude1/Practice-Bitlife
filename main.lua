@@ -11,27 +11,6 @@ function centeredBoxLocation(boxWidth)
   return win_w/2 - (boxWidth/2)
 end
 
--- List of functions that go in buttonFunction()
-function gameStart()
-  hasGameStart = true
-end
-function increaseAge()
-  if pressed == false then
-    age = age + 1
-  end
-end
---The function that is called when a user presses a button. The command that is run depends on the number.
-function buttonFunction(number)
-  if number == 1 then
-    gameStart()
-  elseif number == 2 then
-    --Dead button, doesn't do anything---
-  elseif number == 3 then
-    increaseAge()
-  end
-end
-
-
 --function which allows you to create buttons the player can press with autosizing text
 function button(xLocation,yLocation,width,height,lineWidth,color1,color2,color3,text,textColor,buttonFunctionNumber,hoverEvent,singlePress)
   love.graphics.setLineWidth(lineWidth)
@@ -56,6 +35,36 @@ function button(xLocation,yLocation,width,height,lineWidth,color1,color2,color3,
   love.graphics.print(text,staticFont,xLocation+(width/8),yLocation+(height/15),0,width/(#text*34.0136),height*0.0155)
 end
 
+--The function that is called when a user presses a button. The command that is run depends on the number.
+function buttonFunction(number)
+  if number == 1 then
+    gameStart()
+  elseif number == 2 then
+    --Dead button, doesn't do anything---
+  elseif number == 3 then
+    increaseAge()
+  end
+end
+-- List of functions that go in buttonFunction()
+function gameStart()
+  hasGameStart = true
+end
+function increaseAge()
+  if pressed == false and ageDone == true then
+    age = age + 1
+  end
+end
+
+function choiceButtons(number)
+  button(centeredBoxLocation(win_w/1.05),100,win_w/1.05,40,0,70,70,70,"A grandma accidentally bumps you while getting off the train",255,2,false,false)
+
+  button(centeredBoxLocation(win_w/2.45)-win_w/4.2,180,win_w/2.45,40,5,blue,green,red,"    1. Apologize    ",255,2,false,false)
+  button(centeredBoxLocation(win_w/2.45)-win_w/4.2,255,win_w/2.45,40,5,blue,green,red,"   2. Act offended  ",255,2,false,false)
+  button(centeredBoxLocation(win_w/2.45)-win_w/4.2,330,win_w/2.45,40,5,blue,green,red,"   3. Say nothing   ",255,2,false,false)
+  button(centeredBoxLocation(win_w/2.45)+win_w/4.2,180,win_w/2.45,40,5,blue,green,red,"4. Threaten a lawsuit",255,2,false,false)
+  button(centeredBoxLocation(win_w/2.45)+win_w/4.2,255,win_w/2.45,40,5,blue,green,red," 5. Steal her purse ",255,2,false,false)
+  button(centeredBoxLocation(win_w/2.45)+win_w/4.2,330,win_w/2.45,40,5,blue,green,red,"     6. Attack     ",255,2,false,false)
+end
 --Runs once when the game starts, sets up window and loads any images
 function love.load()
   love.window.setMode(win_w, win_h)
@@ -74,18 +83,15 @@ function love.load()
   colorUpBlue = true
 
   hasGameStart = false
+  ageDone = false
 
   love.graphics.setBackgroundColor(red/255,green/255,blue/255)
 
   age = 1
   choiceStory = false
-  choiceTime = false
-  choiceOne = "Attack her"
-  choiceTwo = ""
-  choiceThree = ""
-  choiceFour = ""
-  choiceFive = ""
-  choiceSix = ""
+  choiceTime = true
+  mainScreen = false
+  nameChosen = false
   
 end
 --Updates the game every frame
@@ -152,40 +158,39 @@ function love.draw()
   end
   --When the game starts, the rest of the images/buttons load and the player gets to play!
   if hasGameStart == true then
-    --Plus 1 button
-    button(centeredBoxLocation(230),win_h-260,230,230,5,green,red,blue,"+1",255,3,true,true)
-    --Name and age print to screen
-    love.graphics.setColor(1,1,1)
-    love.graphics.print("Name: John Smith",staticFont,30,22,0,.75,1)
-    love.graphics.print("Age: " .. age,staticFont,centeredTextLocation(#tostring(age)+5,1),win_h-320,0,1,1)
-
     if choiceTime == true then
-      love.graphics.print("1. " .. choiceOne,staticFont,centeredTextLocation(3,1)-win_w/2.5,100,0,1,1)
-      love.graphics.print("2. " .. choiceTwo,staticFont,centeredTextLocation(3,1)-win_w/2.5,200,0,1,1)
-      love.graphics.print("3. " .. choiceThree,staticFont,centeredTextLocation(3,1)-win_w/2.5,300,0,1,1)
-      love.graphics.print("4. " .. choiceFour,staticFont,centeredTextLocation(3,1)+win_w/9,100,0,1,1)
-      love.graphics.print("5. " .. choiceFive,staticFont,centeredTextLocation(3,1)+win_w/9,200,0,1,1)
-      love.graphics.print("6. " .. choiceSix,staticFont,centeredTextLocation(3,1)+win_w/9,300,0,1,1)
+      choiceButtons()
     end
-
+    if nameChosen == false then
+      button(centeredBoxLocation(230),win_h-260,230,230,5,green,red,blue,"+1",255,3,true,true)
+    end
     --Left title button
-    button(30,win_h-260,352,44,5,green,blue,red,"Player Choices",255,2,false,false)
-    --Left side buttons
-    button(30,win_h-204,170,50,5,green,blue,red,"Option 1",255,2,true,false)
-    button(30,win_h-142,170,50,5,green,blue,red,"Option 2",255,2,true,false)
-    button(30,win_h-80,170,50,5,green,blue,red,"Option 3",255,2,true,false)
-    button(centeredBoxLocation(230)-182,win_h-204,170,50,5,green,blue,red,"Option 4",255,2,true,false)
-    button(centeredBoxLocation(230)-182,win_h-142,170,50,5,green,blue,red,"Option 5",255,2,true,false)
-    button(centeredBoxLocation(230)-182,win_h-80,170,50,5,green,blue,red,"Option 6",255,2,true,false)
+    if mainScreen == true then
+      --Plus 1 button
+      button(centeredBoxLocation(230),win_h-260,230,230,5,green,red,blue,"+1",255,3,true,true)
+      --Name and age print to screen
+      love.graphics.setColor(1,1,1)
+      love.graphics.print("Name: John Smith",staticFont,30,22,0,.75,1)
+      love.graphics.print("Age: " .. age,staticFont,centeredTextLocation(#tostring(age)+5,1),win_h-320,0,1,1)
 
-    --Right title button
-    button(centeredBoxLocation(230)+242,win_h-260,352,44,5,green,blue,red,"Character Stats",255,2,false,false)
-    --Right side buttons
-    button(centeredBoxLocation(230)+242,win_h-204,170,50,5,green,blue,red,"Relations",255,2,true,false)
-    button(centeredBoxLocation(230)+242,win_h-142,170,50,5,green,blue,red,"Finance",255,2,true,false)
-    button(centeredBoxLocation(230)+242,win_h-80,170,50,5,green,blue,red,"Occupation",255,2,true,false)
-    button(win_w-200,win_h-204,170,50,5,green,blue,red,"Education",255,2,true,false)
-    button(win_w-200,win_h-142,170,50,5,green,blue,red,"Health",255,2,true,false)
-    button(win_w-200,win_h-80,170,50,5,green,blue,red,"Purpose",255,2,true,false)
+      button(30,win_h-260,352,44,5,green,blue,red,"Player Choices",255,2,false,false)
+      --Left side buttons
+      button(30,win_h-204,170,50,5,green,blue,red,"Option 1",255,2,true,false)
+      button(30,win_h-142,170,50,5,green,blue,red,"Option 2",255,2,true,false)
+      button(30,win_h-80,170,50,5,green,blue,red,"Option 3",255,2,true,false)
+      button(centeredBoxLocation(230)-182,win_h-204,170,50,5,green,blue,red,"Option 4",255,2,true,false)
+      button(centeredBoxLocation(230)-182,win_h-142,170,50,5,green,blue,red,"Option 5",255,2,true,false)
+      button(centeredBoxLocation(230)-182,win_h-80,170,50,5,green,blue,red,"Option 6",255,2,true,false)
+
+      --Right title button
+      button(centeredBoxLocation(230)+242,win_h-260,352,44,5,green,blue,red,"Character Stats",255,2,false,false)
+      --Right side buttons
+      button(centeredBoxLocation(230)+242,win_h-204,170,50,5,green,blue,red,"Relations",255,2,true,false)
+      button(centeredBoxLocation(230)+242,win_h-142,170,50,5,green,blue,red,"Finance",255,2,true,false)
+      button(centeredBoxLocation(230)+242,win_h-80,170,50,5,green,blue,red,"Occupation",255,2,true,false)
+      button(win_w-200,win_h-204,170,50,5,green,blue,red,"Education",255,2,true,false)
+      button(win_w-200,win_h-142,170,50,5,green,blue,red,"Health",255,2,true,false)
+      button(win_w-200,win_h-80,170,50,5,green,blue,red,"Purpose",255,2,true,false)
+    end
   end
 end

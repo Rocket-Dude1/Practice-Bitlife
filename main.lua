@@ -90,16 +90,6 @@ function choiceButtons(choiceEvent)
   button(win_w-(win_w/2)+20,325,win_w/2.5,50,5,blue,red,green,"6. Mercilessly beat her",255,2,false,false)
 end
 
-function choiceButtons(number)
-  button(centeredBoxLocation(win_w/1.05),100,win_w/1.05,40,0,70,70,70,"A grandma accidentally bumps you while getting off the train",255,2,false,false)
-
-  button(centeredBoxLocation(win_w/2.45)-win_w/4.2,180,win_w/2.45,40,5,blue,green,red,"    1. Apologize    ",255,2,false,false)
-  button(centeredBoxLocation(win_w/2.45)-win_w/4.2,255,win_w/2.45,40,5,blue,green,red,"   2. Act offended  ",255,2,false,false)
-  button(centeredBoxLocation(win_w/2.45)-win_w/4.2,330,win_w/2.45,40,5,blue,green,red,"   3. Say nothing   ",255,2,false,false)
-  button(centeredBoxLocation(win_w/2.45)+win_w/4.2,180,win_w/2.45,40,5,blue,green,red,"4. Threaten a lawsuit",255,2,false,false)
-  button(centeredBoxLocation(win_w/2.45)+win_w/4.2,255,win_w/2.45,40,5,blue,green,red," 5. Steal her purse ",255,2,false,false)
-  button(centeredBoxLocation(win_w/2.45)+win_w/4.2,330,win_w/2.45,40,5,blue,green,red,"     6. Attack     ",255,2,false,false)
-end
 --Runs once when the game starts, sets up window and loads any images
 function love.load()
   love.window.setMode(win_w, win_h)
@@ -125,16 +115,12 @@ function love.load()
   characterNamed = false
   roundCompleted = false
   nameBoxSelected = false
-  ageDone = false
 
   love.graphics.setBackgroundColor(red/255,green/255,blue/255)
 
   age = 1
   choiceStory = false
   choiceTime = true
-
-  mainScreen = false
-  nameChosen = false
   
 end
 
@@ -242,14 +228,6 @@ function love.draw()
       end
       button(centeredBoxLocation(350),win_h-300,350,100,5,green,red,blue,"START",255,7,true,true)
     else
-    if choiceTime == true then
-      choiceButtons()
-    end
-    if nameChosen == false then
-      button(centeredBoxLocation(230),win_h-260,230,230,5,green,red,blue,"+1",255,3,true,true)
-    end
-    --Left title button
-    if mainScreen == true then
       --Plus 1 button
       button(centeredBoxLocation(230),win_h-260,230,230,5,green,red,blue,"+1",255,3,true,true)
       --Name and age print to screen
@@ -262,9 +240,6 @@ function love.draw()
       end
 
       --Left title button
-      love.graphics.print("Name: John Smith",staticFont,30,22,0,.75,1)
-      love.graphics.print("Age: " .. age,staticFont,centeredTextLocation(#tostring(age)+5,1),win_h-320,0,1,1)
-
       button(30,win_h-260,352,44,5,green,blue,red,"Player Choices",255,2,false,false)
       --Left side buttons
       button(30,win_h-204,170,50,5,green,blue,red,"Option 1",255,2,true,false)
@@ -285,5 +260,4 @@ function love.draw()
       button(win_w-200,win_h-80,170,50,5,green,blue,red,"Purpose",255,2,true,false)
     end
   end
-end
 end

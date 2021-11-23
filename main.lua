@@ -1,7 +1,5 @@
 --1018 win_w fits perfectly for now
 win_w = 1018
-if win_w < 1018 then win_w = 1018
-end
 win_h = win_w * 0.7
 --Makes sure events will be random
 math.randomseed(os.time())
@@ -35,10 +33,13 @@ function love.load()
   love.graphics.setBackgroundColor(red/255,green/255,blue/255)
 
   age = 1
+  outcomeLoaded = false
   choiceStory = false
   choiceTime = true
   initialLoad = false
-  previousLine = -1
+  randomStory = -1
+  previousStory = -1
+  outcome = 1
 end
 
 function enterName()
@@ -144,7 +145,9 @@ function love.draw()
         button(centeredBoxLocation(350)+200,300,350,60,5,green,red,blue,"FEMALE",255,5,false,false,false)
       end
       button(centeredBoxLocation(350),win_h-300,350,100,5,green,red,blue,"START",255,7,true,true,false)
-    else
+
+
+    elseif characterCreated == true then
       --Plus 1 button
       button(centeredBoxLocation(230),win_h-260,230,230,5,green,red,blue,"+1",255,3,true,true,false)
       --Name and age print to screen
@@ -154,8 +157,24 @@ function love.draw()
 
       if choiceTime == true then
         choiceButtons(1)
+      elseif outcome > 0 then
+        if outcomeLoaded == false then
+          counter = 1
+          lineNum = (randomStory*20)-(3*outcome)+2+math.random(0,1)
+          outcomeChoice = "this shouldn't appear"
+          file = io.open("textFiles/eventOutcomes".. ageEvent .. ".txt", "r")
+          for line in file:lines() do
+            if counter == lineNum then
+              outcomeChoice = line
+              break
+            end
+            counter = counter + 1
+          end
+          file:close()
+          outcomeLoaded = true
+        end
+        button(centeredBoxLocation(win_w/1.1),200,win_w/1.1,35,5,70,70,70,outcomeChoice,255,2,false,false,false)
       end
-
       --Left title button
       button(30,win_h-260,352,44,5,green,blue,red,"Player Choices",255,2,false,false,false)
       --Left side buttons
@@ -248,21 +267,27 @@ function buttonFunction(number)
     end
   --Choice functions
   elseif number == 8 then
+    outcome = 6
     choiceTime = false
     roundCompleted = true
   elseif number == 9 then
+    outcome = 5
     choiceTime = false
     roundCompleted = true
   elseif number == 10 then
+    outcome = 4
     choiceTime = false
     roundCompleted = true
   elseif number == 11 then
+    outcome = 3
     choiceTime = false
     roundCompleted = true
   elseif number == 12 then
+    outcome = 2
     choiceTime = false
     roundCompleted = true
   elseif number == 13 then
+    outcome = 1
     choiceTime = false
     roundCompleted = true
   end
@@ -278,6 +303,8 @@ function increaseAge()
     roundCompleted = false
     choiceTime = true
     initialLoad = false
+    outcome = -1
+    outcomeLoaded = false
   end
 end
 
@@ -303,9 +330,14 @@ function choiceButtons(choiceEvent)
     else
       ageEvent = 9
     end
-    randomStory = math.random(2)
-    if randomStory == previousLine then randomStory = randomStory + 1 end
-    if randomStory > 2 then randomStory = randomStory - 2 end
+
+    randomStory = math.random(3)
+    if randomStory == previousStory then 
+      randomStory = randomStory + 1
+    end
+    if randomStory > 3 then 
+      randomStory = randomStory - 2
+    end
     theLine = (randomStory*9)-6
     previousStory = randomStory
     count = 1

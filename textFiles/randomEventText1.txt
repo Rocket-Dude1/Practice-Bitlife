@@ -9,10 +9,19 @@ You begin feeling very sick
 6. Attack
 -Ages 1-4
 -Story 2
-You begin feeling very sick2
-1. Cry like a baby
-2. Projectile Vomit
-3. Two and three
-4. Burp loudly
-5. Finger --> outlet
+You accidentally fall into a pool (you can't swim yet)
+1. Shout for help
+2. Accept your fate
+3. Thrash violently
+4. Pray for rescue
+5. Suck in water
+6. Attack
+-Ages 1-4
+-Story 2
+You're playing outside when a rabid dog charges at you
+1. Screech
+2. Play dead
+3. Ignore it
+4. Show your belly
+5. Run away
 6. Attack

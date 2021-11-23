@@ -3,6 +3,8 @@ win_w = 1018
 if win_w < 1018 then win_w = 1018
 end
 win_h = win_w * 0.7
+--Makes sure events will be random
+math.randomseed(os.time())
 
 --Runs once when the game starts, sets up window and loads any images
 function love.load()
@@ -36,6 +38,7 @@ function love.load()
   choiceStory = false
   choiceTime = true
   initialLoad = false
+  previousLine = -1
 end
 
 function enterName()
@@ -156,12 +159,12 @@ function love.draw()
       --Left title button
       button(30,win_h-260,352,44,5,green,blue,red,"Player Choices",255,2,false,false,false)
       --Left side buttons
-      button(30,win_h-204,170,50,5,green,blue,red,"Option 1",255,2,true,false,false)
-      button(30,win_h-142,170,50,5,green,blue,red,"Option 2",255,2,true,false,false)
-      button(30,win_h-80,170,50,5,green,blue,red,"Option 3",255,2,true,false,false)
-      button(centeredBoxLocation(230)-182,win_h-204,170,50,5,green,blue,red,"Option 4",255,2,true,false,false)
-      button(centeredBoxLocation(230)-182,win_h-142,170,50,5,green,blue,red,"Option 5",255,2,true,false,false)
-      button(centeredBoxLocation(230)-182,win_h-80,170,50,5,green,blue,red,"Option 6",255,2,true,false,false)
+      button(30,win_h-204,170,50,5,green,blue,red,"Option 1",255,8,true,false,false)
+      button(30,win_h-142,170,50,5,green,blue,red,"Option 2",255,9,true,false,false)
+      button(30,win_h-80,170,50,5,green,blue,red,"Option 3",255,10,true,false,false)
+      button(centeredBoxLocation(230)-182,win_h-204,170,50,5,green,blue,red,"Option 4",255,11,true,false,false)
+      button(centeredBoxLocation(230)-182,win_h-142,170,50,5,green,blue,red,"Option 5",255,12,true,false,false)
+      button(centeredBoxLocation(230)-182,win_h-80,170,50,5,green,blue,red,"Option 6",255,13,true,false,false)
 
       --Right title button
       button(centeredBoxLocation(230)+242,win_h-260,352,44,5,green,blue,red,"Character Stats",255,2,false,false,false)
@@ -243,6 +246,25 @@ function buttonFunction(number)
       characterCreated = true
     else love.graphics.print("Enter all information",staticFont,centeredTextLocation(21.5,1),200,0,1,1)
     end
+  --Choice functions
+  elseif number == 8 then
+    choiceTime = false
+    roundCompleted = true
+  elseif number == 9 then
+    choiceTime = false
+    roundCompleted = true
+  elseif number == 10 then
+    choiceTime = false
+    roundCompleted = true
+  elseif number == 11 then
+    choiceTime = false
+    roundCompleted = true
+  elseif number == 12 then
+    choiceTime = false
+    roundCompleted = true
+  elseif number == 13 then
+    choiceTime = false
+    roundCompleted = true
   end
 end
 
@@ -254,21 +276,76 @@ function increaseAge()
   if pressed == false and roundCompleted == true then
     age = age + 1
     roundCompleted = false
+    choiceTime = true
+    initialLoad = false
   end
 end
 
 --Function called for every random choice event
 function choiceButtons(choiceEvent)
   if initialLoad == false then
-    file = io.open("randomEventText.txt", "r")
-    firstChoiceText = file:read()
+    if age <= 4 then
+      ageEvent = 1
+    elseif age <= 8 then
+      ageEvent = 2
+    elseif age <= 12 then
+      ageEvent = 3
+    elseif age <= 18 then
+      ageEvent = 4
+    elseif age <= 22 then
+      ageEvent = 5
+    elseif age <= 35 then
+      ageEvent = 6
+    elseif age <= 50 then
+      ageEvent = 7
+    elseif age <= 70 then
+      ageEvent = 8
+    else
+      ageEvent = 9
+    end
+    randomStory = math.random(2)
+    if randomStory == previousLine then randomStory = randomStory + 1 end
+    if randomStory > 2 then randomStory = randomStory - 2 end
+    theLine = (randomStory*9)-6
+    previousStory = randomStory
+    count = 1
+
+    story = ""
+    firstChoiceText = ""
+    secondChoiceText = ""
+    thirdChoiceText = ""
+    fourthChoiceText = ""
+    fifthChoiceText = ""
+    sixthChoiceText = ""
+
+    file = io.open("textFiles/randomEventText".. ageEvent .. ".txt", "r")
+    for line in file:lines() do
+      if count == theLine then
+        story = line
+      elseif count == theLine+1 then
+        firstChoiceText = line
+      elseif count == theLine+2 then
+        secondChoiceText = line
+      elseif count == theLine+3 then
+        thirdChoiceText = line
+      elseif count == theLine+4 then
+        fourthChoiceText = line
+      elseif count == theLine+5 then
+        fifthChoiceText = line
+      elseif count == theLine+6 then
+        sixthChoiceText = line
+      end
+      count = count + 1
+    end
     initialLoad = true
+    file:close()
   end
-  button(centeredBoxLocation(win_w/1.15),100,win_w/1.15,35,5,70,70,70,"A grandma accidentally bumped you while getting off the train",255,2,false,false,false)
+
+  button(centeredBoxLocation(win_w/1.15),100,win_w/1.15,35,5,70,70,70,story,255,2,false,false,false)
   button(80,175,win_w/2.5,50,5,blue,red,green,firstChoiceText,255,2,false,false,false)
-  button(80,250,win_w/2.5,50,5,blue,red,green,"2. Say Nothing",255,2,false,false,false)
-  button(80,325,win_w/2.5,50,5,blue,red,green,"3. Act offended",255,2,false,false,false)
-  button(win_w-(win_w/2)+20,175,win_w/2.5,50,5,blue,red,green,"4. Threaten lawsuit",255,2,false,false,false)
-  button(win_w-(win_w/2)+20,250,win_w/2.5,50,5,blue,red,green,"5. Take her purse",255,2,false,false,false)
-  button(win_w-(win_w/2)+20,325,win_w/2.5,50,5,blue,red,green,"6. Attack",255,2,false,false,true)
+  button(80,250,win_w/2.5,50,5,blue,red,green,secondChoiceText,255,2,false,false,false)
+  button(80,325,win_w/2.5,50,5,blue,red,green,thirdChoiceText,255,2,false,false,false)
+  button(win_w-(win_w/2)+20,175,win_w/2.5,50,5,blue,red,green,fourthChoiceText,255,2,false,false,false)
+  button(win_w-(win_w/2)+20,250,win_w/2.5,50,5,blue,red,green,fifthChoiceText,255,2,false,false,false)
+  button(win_w-(win_w/2)+20,325,win_w/2.5,50,5,blue,red,green,sixthChoiceText,255,2,false,false,false)
 end

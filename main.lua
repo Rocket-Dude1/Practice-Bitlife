@@ -248,24 +248,31 @@ end
 
 --The function that is called when a user presses a button. The command that is run depends on the number.
 function buttonFunction(number)
+  --Starts the game
   if number == 1 then
     gameStart()
+  --Dead button, a place holder for buttons
   elseif number == 2 then
-    --Dead button, doesn't do anything---
+    --Empty
+  --Increases the player's age when the round is completed
   elseif number == 3 then
     increaseAge()
+  --Sets the character's gender to male
   elseif number == 4 then
     gender = "MALE"
+  --Sets the character's gender to female
   elseif number == 5 then
     gender = "FEMALE"
+  --Determines whether or not the name box is selected for editing. If it is, the user can enter their name
   elseif number == 6 then
     nameBoxSelected = true
+  --The start button after you've made your character. Checks that all info is complete first.
   elseif number == 7 then
-    if #name >= 2 and gender ~= "" then
+    if #name >= 1 and gender ~= "" then
       characterCreated = true
     else love.graphics.print("Enter all information",staticFont,centeredTextLocation(21.5,1),200,0,1,1)
     end
-  --Choice functions
+  --Choice functions. Determines the outcome of each of the option buttons from 1 to 6
   elseif number == 8 then
     outcome = 6
     choiceTime = false
@@ -290,6 +297,8 @@ function buttonFunction(number)
     outcome = 1
     choiceTime = false
     roundCompleted = true
+  --Player statistics buttons. Shows different aspects of the players life as they currently stand.
+  elseif number == 14 then
   end
 end
 
